@@ -1,0 +1,58 @@
+CREATE DATABASE EVENTOSBD
+USE EVENTOSBD
+
+CREATE TABLE cliente (
+  id        int IDENTITY(0, 1) NOT NULL PRIMARY KEY, 
+  nombres   varchar(50) NOT NULL, 
+  apellidos varchar(50) NOT NULL, 
+  correo    varchar(50) NOT NULL, 
+  usuario   varchar(50) NOT NULL, 
+  pass      varchar(50) NOT NULL, 
+);
+
+CREATE TABLE contacto (
+  id        int IDENTITY(0, 1) NOT NULL PRIMARY KEY , 
+  nombres   varchar(50) NOT NULL, 
+  apellidos varchar(50) NOT NULL, 
+  correo    varchar(50) NOT NULL, 
+  precio    decimal(18, 2) NOT NULL, 
+  baja      bit NOT NULL, 
+  idc       int NOT NULL, 
+ )
+ 
+CREATE TABLE dbo.evento (
+  id          int IDENTITY(0, 1) NOT NULL PRIMARY KEY, 
+  nombre      varchar(50) NOT NULL, 
+  precio      decimal(18, 2) NOT NULL, 
+  direccion   varchar(50) NOT NULL, 
+  fechainicio bigint NOT NULL, 
+  fechafinal  bigint NOT NULL, 
+  cancelado   bit NOT NULL, 
+  idc         int NOT NULL, 
+);
+
+CREATE TABLE invitacion (
+  ide            int NOT NULL, 
+  idc            int NOT NULL, 
+  contacto       varchar(50) NOT NULL, 
+  evento         int NOT NULL, 
+  personasextras int NOT NULL, 
+  PRIMARY KEY (ide, idc)
+);
+
+CREATE TABLE tarifa (
+  contacto decimal(18, 2) NOT NULL, 
+  evento   decimal(18, 2) NOT NULL
+  )
+  
+ALTER TABLE contacto ADD  FOREIGN KEY (idc) REFERENCES cliente (id) 
+ON UPDATE Cascade ON DELETE Cascade
+
+ALTER TABLE evento ADD FOREIGN KEY (idc) REFERENCES cliente (id) 
+ON UPDATE Cascade ON DELETE Cascade
+
+ALTER TABLE invitacion ADD FOREIGN KEY (ide) REFERENCES evento (id) 
+ON UPDATE Cascade ON DELETE Cascade
+
+ALTER TABLE invitacion ADD FOREIGN KEY (idc) REFERENCES contacto (id) 
+ON UPDATE No action ON DELETE No action
